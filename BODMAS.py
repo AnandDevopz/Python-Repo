@@ -10,4 +10,5 @@ Created on Tue May 30 16:50:25 2023
 
 a=int(2)
 b=int(3)
-print(a*b+a/b-b)
+print(a*b+a/b-b+a-b)
+
