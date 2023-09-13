@@ -1,0 +1,28 @@
+import shutil
+import os
+import datetime
+
+def backup_directory(source_dir, dest_dir):
+    try:
+        # Create a timestamp for the backup folder
+        timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+
+        # Create a backup folder with the current timestamp
+        backup_folder = os.path.join(dest_dir, f"backup_{timestamp}")
+
+        # Copy the contents of the source directory to the backup folder
+        shutil.copytree(source_dir, backup_folder)
+
+        print(f"Backup completed successfully to: {backup_folder}")
+    except Exception as e:
+        print(f"Backup failed: {str(e)}")
+
+if __name__ == "__main__":
+    # Specify the source directory you want to back up
+    source_directory = "/path/to/source_directory"
+
+    # Specify the destination directory where backups will be stored
+    destination_directory = "/path/to/backup_directory"
+
+    # Call the backup function
+    backup_directory(source_directory, destination_directory)
