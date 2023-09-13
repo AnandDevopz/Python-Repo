@@ -1,0 +1,33 @@
+import boto3
+
+def get_live_instance_ips(auto_scaling_group_name, region_name='us-east-1'):
+    try:
+        # Initialize a Boto3 Auto Scaling client
+        client = boto3.client('autoscaling', region_name=region_name)
+
+        # Describe instances in the Auto Scaling group
+        response = client.describe_auto_scaling_groups(AutoScalingGroupNames=[auto_scaling_group_name])
+
+        # Extract the list of instances
+        instances = response['AutoScalingGroups'][0]['Instances']
+
+        # Get the IP addresses of running instances
+        live_ips = [instance['PrivateIpAddress'] for instance in instances if instance['LifecycleState'] == 'InService']
+
+        return live_ips
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        return []
+
+if __name__ == "__main__":
+    auto_scaling_group_name = "your-auto-scaling-group-name"
+    region_name = "us-east-1"  # Replace with your desired AWS region
+
+    live_ips = get_live_instance_ips(auto_scaling_group_name, region_name)
+
+    if live_ips:
+        print("IP addresses of live servers:")
+        for ip in live_ips:
+            print(ip)
+    else:
+        print("No live servers found in the Auto Scaling group.")
